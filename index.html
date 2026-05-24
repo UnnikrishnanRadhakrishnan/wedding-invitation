@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#621d2c">
+  <title>Unnikrishnan & Rohini Wedding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="petals.css">
+</head>
+<body>
+  <div class="petal-field" aria-hidden="true"></div>
+  <div class="light-trail" aria-hidden="true"></div>
+
+  <button class="audio-toggle" type="button" data-audio-toggle aria-label="Toggle music">
+    <span class="audio-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+
+  <audio id="music" loop preload="none">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <main>
+    <section class="hero" id="home" data-section>
+      <div class="hero-art" aria-hidden="true">
+        <div class="moon"></div>
+        <div class="mandap">
+          <span></span><span></span><span></span><span></span>
+          <div class="canopy"></div>
+          <div class="lamp lamp-left"></div>
+          <div class="lamp lamp-right"></div>
+        </div>
+      </div>
+
+      <div class="invite-shell" data-invite>
+        <button class="envelope" type="button" data-open-invite aria-label="Open invitation">
+          <span class="envelope-flap"></span>
+          <span class="envelope-card">
+            <small>Wedding Invitation</small>
+            <strong>Unnikrishnan & Rohini</strong>
+          </span>
+          <span class="wax-seal">UR</span>
+        </button>
+
+        <div class="invitation-panel" aria-live="polite">
+          <p class="eyebrow">Together with their families</p>
+          <h1>Unnikrishnan R <span>and</span> Rohini Krishna P</h1>
+          <p class="date-line">23 August 2026, 12:05 PM</p>
+          <div class="countdown" id="countdown" aria-label="Countdown to wedding">
+            <span><strong>0</strong><small>Days</small></span>
+            <span><strong>0</strong><small>Hours</small></span>
+            <span><strong>0</strong><small>Minutes</small></span>
+            <span><strong>0</strong><small>Seconds</small></span>
+          </div>
+          <div class="hero-actions">
+            <a class="primary-action" href="#rsvp">RSVP</a>
+            <a class="secondary-action" href="#events">View Events</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-dock" aria-label="Wedding sections">
+      <a href="#home">Home</a>
+      <a href="#events">Events</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#rsvp">RSVP</a>
+    </nav>
+
+    <section class="events-section" id="events" data-section>
+      <div class="section-heading">
+        <p class="eyebrow">The Celebration</p>
+        <h2>Choose an event</h2>
+      </div>
+
+      <div class="event-layout">
+        <div class="event-tabs" role="tablist" aria-label="Wedding events">
+          <button type="button" class="event-tab is-active" role="tab" aria-selected="true" data-event-tab="wedding">Wedding</button>
+          <button type="button" class="event-tab" role="tab" aria-selected="false" data-event-tab="reception">Reception</button>
+        </div>
+
+        <article class="event-detail" data-event-panel>
+          <div>
+            <p class="event-kicker">Wedding Ceremony</p>
+            <h3>Girideepam Convention Centre</h3>
+            <p>Sunday, 23 August 2026 at 12:05 PM</p>
+          </div>
+          <a class="map-link" href="https://www.google.com/maps?q=Girideepam+Convention+Centre" target="_blank" rel="noopener">Open map</a>
+        </article>
+
+        <div class="map-frame">
+          <iframe title="Girideepam Convention Centre map" data-map src="https://www.google.com/maps?q=Girideepam+Convention+Centre&output=embed" loading="lazy"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="gallery" data-section>
+      <div class="section-heading">
+        <p class="eyebrow">Moments</p>
+        <h2>Swipe through the story</h2>
+      </div>
+
+      <div class="gallery-stage">
+        <button class="gallery-control" type="button" data-gallery-prev aria-label="Previous moment"></button>
+        <div class="gallery-track" data-gallery-track aria-live="polite">
+          <figure class="memory-slide is-active" data-slide>
+            <img class="memory-photo" src="images/story1.png" alt="Unnikrishnan and Rohini">
+            <figcaption>
+              <strong>The beginning</strong>
+              <span>Two names, one promise, and a day getting closer.</span>
+            </figcaption>
+          </figure>
+          <figure class="memory-slide" data-slide>
+            <img class="memory-photo" src="images/story2.png" alt="Family celebration">
+            <figcaption>
+              <strong>Families gather</strong>
+              <span>A warm celebration shaped by blessings and laughter.</span>
+            </figcaption>
+          </figure>
+          <figure class="memory-slide" data-slide>
+            <img class="memory-photo" src="images/story3.png" alt="Wedding invitation moment">
+            <figcaption>
+              <strong>See you there</strong>
+              <span>The invitation becomes real when your name is on the list.</span>
+            </figcaption>
+          </figure>
+        </div>
+        <button class="gallery-control next" type="button" data-gallery-next aria-label="Next moment"></button>
+      </div>
+
+      <div class="gallery-dots" data-gallery-dots aria-label="Gallery slides"></div>
+    </section>
+
+    <section class="rsvp-section" id="rsvp" data-section>
+      <div class="section-heading">
+        <p class="eyebrow">Join Us</p>
+        <h2>Send your RSVP</h2>
+      </div>
+
+      <div class="rsvp-grid">
+        <form class="rsvp-form" id="form">
+          <label>
+            Name
+            <input id="name" name="name" placeholder="Your name" autocomplete="name" required>
+          </label>
+
+          <fieldset>
+            <legend>Will you attend?</legend>
+            <div class="choice-row" role="radiogroup" aria-label="Attendance">
+              <label><input type="radio" name="attending" value="Yes" checked><span>Yes</span></label>
+              <label><input type="radio" name="attending" value="No"><span>No</span></label>
+            </div>
+          </fieldset>
+
+          <label>
+            Guests
+            <input type="range" id="guests" min="0" max="6" value="1">
+            <span class="guest-readout"><output id="guestValue">1</output> guest</span>
+          </label>
+
+          <label>
+            Message
+            <textarea id="message" name="message" rows="4" placeholder="A note for the couple"></textarea>
+          </label>
+
+          <button class="submit-btn" type="submit">Submit RSVP</button>
+          <p id="msg" class="form-message" role="status"></p>
+        </form>
+
+        <aside class="rsvp-preview" aria-label="RSVP preview">
+          <p class="eyebrow">Preview</p>
+          <h3 data-preview-name>Your name</h3>
+          <p data-preview-attending>Will attend with 1 guest.</p>
+          <blockquote data-preview-message>Write a little note and it will appear here.</blockquote>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <button class="floating-rsvp" type="button" data-scroll-rsvp aria-label="Go to RSVP">RSVP</button>
+
+  <script src="petals.js"></script>
+</body>
+</html>

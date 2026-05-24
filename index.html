@@ -3,20 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#621d2c">
+  <meta name="theme-color" content="#173f35">
   <title>Unnikrishnan & Rohini Wedding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="petals.css">
 </head>
 <body>
   <div class="petal-field" aria-hidden="true"></div>
   <div class="light-trail" aria-hidden="true"></div>
-
-  <button class="audio-toggle" type="button" data-audio-toggle aria-label="Toggle music">
-    <span class="audio-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-  </button>
 
   <audio id="music" loop preload="none">
     <source src="music.mp3" type="audio/mpeg">
@@ -25,7 +21,6 @@
   <main>
     <section class="hero" id="home" data-section>
       <div class="hero-art" aria-hidden="true">
-        <div class="moon"></div>
         <div class="mandap">
           <span></span><span></span><span></span><span></span>
           <div class="canopy"></div>
@@ -46,7 +41,7 @@
 
         <div class="invitation-panel" aria-live="polite">
           <p class="eyebrow">Together with their families</p>
-          <h1>Unnikrishnan R <span>and</span> Rohini Krishna P</h1>
+          <h1><span class="name-line">Unnikrishnan</span> <span>and</span> <span class="name-line">Rohini Krishna</span></h1>
           <p class="date-line">23 August 2026, 12:05 PM</p>
           <div class="countdown" id="countdown" aria-label="Countdown to wedding">
             <span><strong>0</strong><small>Days</small></span>
@@ -178,8 +173,6 @@
       </div>
     </section>
   </main>
-
-  <button class="floating-rsvp" type="button" data-scroll-rsvp aria-label="Go to RSVP">RSVP</button>
 
   <script src="petals.js"></script>
 </body>

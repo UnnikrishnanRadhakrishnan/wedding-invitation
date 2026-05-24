@@ -60,13 +60,15 @@ function updateCountdown() {
 }
 
 function createPetals() {
-  const petalCount = window.matchMedia("(max-width: 760px)").matches ? 22 : 42;
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  const petalCount = isMobile ? 22 : 42;
+  const driftRange = isMobile ? 14 : 34;
 
   for (let index = 0; index < petalCount; index += 1) {
     const petal = document.createElement("span");
     petal.className = "petal";
     petal.style.setProperty("--x", `${Math.random() * 100}vw`);
-    petal.style.setProperty("--drift", `${Math.random() * 34 - 17}vw`);
+    petal.style.setProperty("--drift", `${Math.random() * driftRange - driftRange / 2}vw`);
     petal.style.setProperty("--size", `${0.55 + Math.random() * 0.75}rem`);
     petal.style.setProperty("--opacity", `${0.3 + Math.random() * 0.48}`);
     petal.style.setProperty("--rotate", `${Math.random() * 360}deg`);

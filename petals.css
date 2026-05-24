@@ -19,10 +19,12 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   min-height: 100vh;
+  width: 100%;
   margin: 0;
   color: var(--ink);
   background:
@@ -30,7 +32,7 @@ body {
     radial-gradient(circle at 85% 18%, rgba(15, 107, 112, 0.18), transparent 25rem),
     linear-gradient(145deg, #fff8ee 0%, #f8d9d6 42%, #f4eee3 100%);
   font-family: var(--body-font);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 button,
@@ -58,9 +60,11 @@ main {
 .light-trail {
   position: fixed;
   inset: 0;
+  width: 100%;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
+  overflow: clip;
+  contain: paint;
 }
 
 .petal {
@@ -89,8 +93,10 @@ main {
   position: relative;
   display: grid;
   min-height: 94vh;
+  max-width: 100%;
   padding: 5rem clamp(1rem, 4vw, 5rem) 7rem;
   place-items: center;
+  overflow-x: clip;
 }
 
 .hero-art {
@@ -98,7 +104,8 @@ main {
   inset: 0;
   display: grid;
   place-items: end center;
-  overflow: hidden;
+  overflow: clip;
+  contain: paint;
 }
 
 .mandap {

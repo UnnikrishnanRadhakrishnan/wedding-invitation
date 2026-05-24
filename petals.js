@@ -4,9 +4,6 @@ const openInviteButton = document.querySelector("[data-open-invite]");
 const countdown = document.querySelector("#countdown");
 const petalField = document.querySelector(".petal-field");
 const lightTrail = document.querySelector(".light-trail");
-const audio = document.querySelector("#music");
-const audioToggle = document.querySelector("[data-audio-toggle]");
-const floatingRsvp = document.querySelector("[data-scroll-rsvp]");
 const form = document.querySelector("#form");
 const guestInput = document.querySelector("#guests");
 const guestValue = document.querySelector("#guestValue");
@@ -186,19 +183,6 @@ async function submitRsvp(event) {
   }
 }
 
-function toggleAudio() {
-  if (audio.paused) {
-    audio.play()
-      .then(() => audioToggle.classList.add("is-playing"))
-      .catch(() => {
-        audioToggle.classList.remove("is-playing");
-      });
-  } else {
-    audio.pause();
-    audioToggle.classList.remove("is-playing");
-  }
-}
-
 function watchSections() {
   const dockLinks = [...document.querySelectorAll(".section-dock a")];
   const sections = [...document.querySelectorAll("[data-section]")];
@@ -222,8 +206,6 @@ function watchSections() {
 }
 
 openInviteButton.addEventListener("click", openInvite);
-audioToggle.addEventListener("click", toggleAudio);
-floatingRsvp.addEventListener("click", () => document.querySelector("#rsvp").scrollIntoView({ behavior: "smooth" }));
 document.querySelector("[data-gallery-prev]").addEventListener("click", () => setSlide(activeSlide - 1));
 document.querySelector("[data-gallery-next]").addEventListener("click", () => setSlide(activeSlide + 1));
 galleryTrack.addEventListener("touchstart", (event) => {

@@ -803,6 +803,105 @@ input[type="range"] {
   line-height: 1.05;
 }
 
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.video-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.video-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(29, 36, 32, 0.48);
+  backdrop-filter: blur(10px);
+}
+
+.video-modal__dialog {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 31rem);
+  padding: clamp(1.35rem, 5vw, 2.1rem);
+  border: 1px solid rgba(98, 29, 44, 0.14);
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 214, 175, 0.28), transparent 18rem),
+    rgba(255, 253, 248, 0.96);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.video-modal__dialog h2 {
+  font-size: clamp(2.25rem, 8vw, 3.6rem);
+}
+
+.video-modal__copy {
+  margin: 0;
+  color: #425149;
+  line-height: 1.6;
+}
+
+.video-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.video-modal__actions .is-disabled {
+  opacity: 0.58;
+  pointer-events: none;
+}
+
+.video-modal__actions .secondary-action {
+  width: 100%;
+  border-color: rgba(98, 29, 44, 0.18);
+}
+
+.video-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(23, 63, 53, 0.08);
+  cursor: pointer;
+}
+
+.video-modal__close::before,
+.video-modal__close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 1rem;
+  height: 0.12rem;
+  border-radius: 999px;
+  background: var(--wine);
+}
+
+.video-modal__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.video-modal__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 @keyframes petal-fall {
   to {
     transform: translate3d(calc(var(--x) + var(--drift)), 110vh, 0) rotate(calc(var(--rotate) + 540deg));
@@ -903,6 +1002,10 @@ input[type="range"] {
 
   .gallery-track {
     width: min(100%, 27rem);
+  }
+
+  .video-modal__actions {
+    grid-template-columns: 1fr;
   }
 }
 

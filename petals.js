@@ -13,6 +13,9 @@ const previewName = document.querySelector("[data-preview-name]");
 const previewAttending = document.querySelector("[data-preview-attending]");
 const previewMessage = document.querySelector("[data-preview-message]");
 const formMessage = document.querySelector("#msg");
+const videoModal = document.querySelector("[data-video-modal]");
+const videoFormLink = document.querySelector("[data-video-form-link]");
+const videoModalCloseButtons = document.querySelectorAll("[data-close-video-modal]");
 const eventTabs = document.querySelectorAll("[data-event-tab]");
 const eventPanel = document.querySelector("[data-event-panel]");
 const mapFrame = document.querySelector("[data-map]");
@@ -37,6 +40,8 @@ const events = {
     query: "RDR+Convention+Centre"
   }
 };
+
+const videoFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd532EJfObF-dDajoLiJIW6bGWpgQ9JrgJq_1UTQ7hAuQ9g2A/viewform";
 
 function openInvite() {
   invite.classList.add("is-open");
@@ -145,6 +150,17 @@ function updatePreview() {
   previewMessage.textContent = message;
 }
 
+function openVideoModal() {
+  videoModal.classList.add("is-open");
+  videoModal.setAttribute("aria-hidden", "false");
+  videoFormLink.focus();
+}
+
+function closeVideoModal() {
+  videoModal.classList.remove("is-open");
+  videoModal.setAttribute("aria-hidden", "true");
+}
+
 async function submitRsvp(event) {
   event.preventDefault();
 
@@ -176,9 +192,13 @@ async function submitRsvp(event) {
 
     formMessage.textContent = "Thank you. Your RSVP has been recorded.";
     formMessage.style.color = "#0f6b70";
+    const shouldPromptForVideo = data.attending === "No";
     form.reset();
     guestInput.value = "1";
     updatePreview();
+    if (shouldPromptForVideo) {
+      openVideoModal();
+    }
   } catch (error) {
     formMessage.textContent = "Could not send RSVP. Please try again.";
     formMessage.style.color = "#a13545";
@@ -225,8 +245,23 @@ galleryTrack.addEventListener("touchend", (event) => {
 }, { passive: true });
 eventTabs.forEach((tab) => tab.addEventListener("click", () => updateEvent(tab.dataset.eventTab)));
 form.addEventListener("input", updatePreview);
-form.addEventListener("change", updatePreview);
+form.addEventListener("change", () => {
+  updatePreview();
+});
 form.addEventListener("submit", submitRsvp);
+if (videoFormUrl) {
+  videoFormLink.href = videoFormUrl;
+} else {
+  videoFormLink.removeAttribute("href");
+  videoFormLink.classList.add("is-disabled");
+  videoFormLink.textContent = "Upload form coming soon";
+}
+videoModalCloseButtons.forEach((button) => button.addEventListener("click", closeVideoModal));
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && videoModal.classList.contains("is-open")) {
+    closeVideoModal();
+  }
+});
 
 let lastSpark = 0;
 window.addEventListener("pointermove", (event) => {

@@ -222,6 +222,15 @@ main {
   transition: transform 850ms cubic-bezier(.22, 1, .36, 1);
 }
 
+.envelope-names {
+  font-family: "Tangerine", Georgia, serif;
+  font-size: clamp(1.8rem, 6vw, 3.3rem);
+  line-height: 0.9;
+  font-weight: 700;
+  display: block;
+}
+
+
 .envelope-card small {
   text-transform: uppercase;
   font-size: 0.74rem;
@@ -308,9 +317,9 @@ h3 {
 
 h1 {
   color: #7d3345;
-  font-family: var(--couple-font);
+  font-family: "Tangerine", Georgia, serif;
   font-size: clamp(3.2rem, 9.5vw, 6.9rem);
-  font-weight: 600;
+  font-weight: 100;
   overflow-wrap: anywhere;
 }
 
@@ -320,13 +329,16 @@ h1 span {
   color: var(--gold);
   font-size: clamp(1.4rem, 4vw, 2.3rem);
   font-style: italic;
+  font-family: "Tangerine", Georgia, serif;
 }
+
 
 h1 .name-line {
   max-width: 100%;
   color: #7d3345;
+  font-family: "Tangerine", Georgia, serif;
   font-size: clamp(3.2rem, 9.5vw, 6.9rem);
-  font-weight: 600;
+  font-weight: 100;
   font-style: normal;
   line-height: 0.88;
 }

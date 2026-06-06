@@ -314,19 +314,30 @@ main {
 }
 
 /* panel photo wrapper - extend to edges of invitation-panel */
+/* panel photo wrapper - basic layout */
 .panel-photo-wrap {
   position: relative;
   display: block;
-  width: calc(100% + clamp(4rem, 12vw, 9.6rem));
+  width: 100%;
   text-align: center;
   margin: 0 0 1rem;
   z-index: 3;
-  margin-left: calc(-1 * clamp(2rem, 6vw, 4.8rem));
-  margin-right: calc(-1 * clamp(2rem, 6vw, 4.8rem));
-  /* Maximum pull to top */
-  margin-top: calc(-1 * clamp(3.5rem, 10vw, 6.5rem));
-
 }
+
+
+/* Adjust photo margins for mobile */
+@media (max-width: 560px) {
+  .panel-photo-wrap {
+    width: 100%;
+    margin: 0 0 1rem;
+  }
+
+  .panel-photo-outside {
+    width: 100%;
+  }
+}
+
+
 
 /* make the photo fill the wrapper completely */
 .panel-photo-outside {
@@ -358,22 +369,6 @@ main {
   mix-blend-mode: overlay;
   opacity: 0.92;
 }
-
-
-
-
-
-
-@media (max-width: 560px) {
-  .panel-photo-outside {
-    width: min(16rem, 80%);
-    margin-bottom: 0.75rem;
-  }
-}
-
-
-
-
 
 .invite-shell.is-open .invitation-panel {
   opacity: 1;

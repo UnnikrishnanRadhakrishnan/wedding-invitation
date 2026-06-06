@@ -18,7 +18,6 @@ const videoFormLink = document.querySelector("[data-video-form-link]");
 const videoModalCloseButtons = document.querySelectorAll("[data-close-video-modal]");
 const eventTabs = document.querySelectorAll("[data-event-tab]");
 const eventPanel = document.querySelector("[data-event-panel]");
-const mapFrame = document.querySelector("[data-map]");
 const slides = [...document.querySelectorAll("[data-slide]")];
 const galleryDots = document.querySelector("[data-gallery-dots]");
 const galleryTrack = document.querySelector("[data-gallery-track]");
@@ -110,7 +109,6 @@ function updateEvent(key) {
     </div>
     <a class="map-link" href="https://www.google.com/maps?q=${event.query}" target="_blank" rel="noopener">Open map</a>
   `;
-  mapFrame.src = `https://www.google.com/maps?q=${event.query}&output=embed`;
 }
 
 function setSlide(index) {

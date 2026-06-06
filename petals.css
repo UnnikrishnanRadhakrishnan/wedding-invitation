@@ -597,6 +597,7 @@ h3 {
 
 .event-detail {
   display: grid;
+  grid-column: 1 / -1;
   align-content: space-between;
   min-height: 22rem;
   padding: clamp(1.4rem, 4vw, 2rem);
@@ -611,23 +612,6 @@ h3 {
 .event-detail p:not(.event-kicker) {
   color: #425149;
   font-weight: 600;
-}
-
-.map-frame {
-  min-height: 22rem;
-  overflow: hidden;
-  border: 1px solid rgba(98, 29, 44, 0.13);
-  border-radius: 0.8rem;
-  background: #e9ded3;
-  box-shadow: 0 20px 60px rgba(54, 20, 25, 0.12);
-}
-
-.map-frame iframe {
-  width: 100%;
-  height: 100%;
-  min-height: 22rem;
-  border: 0;
-  filter: saturate(0.9) contrast(0.95);
 }
 
 .gallery-stage {
@@ -1085,7 +1069,6 @@ input[type="range"] {
   }
 
   .event-detail,
-  .map-frame,
   .rsvp-form,
   .rsvp-preview {
     width: 100%;

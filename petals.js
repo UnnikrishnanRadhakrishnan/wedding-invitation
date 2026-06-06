@@ -21,6 +21,7 @@ const videoModal = document.querySelector("[data-video-modal]");
 const videoFormLink = document.querySelector("[data-video-form-link]");
 const videoModalCloseButtons = document.querySelectorAll("[data-close-video-modal]");
 const eventTabs = document.querySelectorAll("[data-event-tab]");
+const eventTabList = document.querySelector("[role='tablist'][aria-label='Wedding events']");
 const eventPanel = document.querySelector("[data-event-panel]");
 const slides = [...document.querySelectorAll("[data-slide]")];
 const galleryDots = document.querySelector("[data-gallery-dots]");
@@ -35,14 +36,21 @@ const events = {
     title: "Girideepam Convention Centre",
     location: "Inside Mar Ivanios Vidya Nagar Main Gate, Nalanchira, Trivandrum",
     detail: "Sunday, 23 August 2026 at 12:05 PM",
-    query: "Girideepam+Convention+Centre"
+    mapUrl: "https://www.google.com/maps?q=Girideepam+Convention+Centre"
   },
   reception: {
     kicker: "Reception",
     title: "RDR Convention Centre",
     location: "Edapazhanji, Trivandrum",
     detail: "Monday, 24 August 2026 at 5:30 PM",
-    query: "RDR+Convention+Centre"
+    mapUrl: "https://www.google.com/maps?q=RDR+Convention+Centre"
+  },
+  sangeeth: {
+    kicker: "Sangeeth",
+    title: "Sangeeth Celebration",
+    location: "Location shared privately",
+    detail: "An evening of music, dance, and celebration",
+    mapUrl: "https://maps.app.goo.gl/STb2p3m6F3wfmBWU6?g_st=iw"
   }
 };
 
@@ -101,7 +109,7 @@ function createSpark(x, y) {
 
 function updateEvent(key) {
   const event = events[key];
-  eventTabs.forEach((tab) => {
+  document.querySelectorAll("[data-event-tab]").forEach((tab) => {
     const isActive = tab.dataset.eventTab === key;
     tab.classList.toggle("is-active", isActive);
     tab.setAttribute("aria-selected", String(isActive));
@@ -113,9 +121,40 @@ function updateEvent(key) {
       <h3>${event.title}</h3>
       <p><i>${event.location}</i></p>
       <p>${event.detail}</p>
-      <a class="map-link" href="https://www.google.com/maps?q=${event.query}" target="_blank" rel="noopener">Open map</a>
+      <a class="map-link" href="${event.mapUrl}" target="_blank" rel="noopener">Open map</a>
     </div>
   `;
+}
+
+function hasSangeethAccess() {
+  const params = new URLSearchParams(window.location.search);
+  const invite = params.get("invite");
+  const event = params.get("event");
+  return window.location.hash === "#sangeeth"
+    || invite === "sangeeth"
+    || event === "sangeeth"
+    || params.has("sangeeth");
+}
+
+function revealSangeethEvent() {
+  if (!hasSangeethAccess() || !eventTabList) {
+    return;
+  }
+
+  const sangeethTab = document.createElement("button");
+  sangeethTab.type = "button";
+  sangeethTab.className = "event-tab";
+  sangeethTab.setAttribute("role", "tab");
+  sangeethTab.setAttribute("aria-selected", "false");
+  sangeethTab.dataset.eventTab = "sangeeth";
+  sangeethTab.textContent = "Sangeeth";
+  sangeethTab.addEventListener("click", () => updateEvent("sangeeth"));
+  eventTabList.appendChild(sangeethTab);
+
+  if (window.location.hash === "#sangeeth" || new URLSearchParams(window.location.search).get("event") === "sangeeth") {
+    updateEvent("sangeeth");
+    document.querySelector("#events").scrollIntoView({ block: "start" });
+  }
 }
 
 function setSlide(index) {
@@ -263,6 +302,7 @@ galleryTrack.addEventListener("touchend", (event) => {
   }
 }, { passive: true });
 eventTabs.forEach((tab) => tab.addEventListener("click", () => updateEvent(tab.dataset.eventTab)));
+revealSangeethEvent();
 guestInput.addEventListener("input", updateGuestReadout);
 form.addEventListener("submit", submitRsvp);
 if (videoFormUrl) {

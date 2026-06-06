@@ -102,12 +102,12 @@ function updateEvent(key) {
   });
 
   eventPanel.innerHTML = `
-    <div>
-      <p class="event-kicker">${event.kicker}</p>
+    <div class="section-heading">
+      <p class="eyebrow event-kicker">${event.kicker}</p>
       <h3>${event.title}</h3>
       <p>${event.detail}</p>
+      <a class="map-link" href="https://www.google.com/maps?q=${event.query}" target="_blank" rel="noopener">Open map</a>
     </div>
-    <a class="map-link" href="https://www.google.com/maps?q=${event.query}" target="_blank" rel="noopener">Open map</a>
   `;
 }
 

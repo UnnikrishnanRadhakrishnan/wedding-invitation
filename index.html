@@ -7,7 +7,7 @@
   <title>Unnikrishnan & Rohini Wedding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Lora:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&family=Stalemate&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="petals.css">
 </head>
 <body>
@@ -22,12 +22,12 @@
 
     <section class="hero" id="home" data-section>
       <div class="hero-art" aria-hidden="true">
-        <div class="mandap">
-          <span></span><span></span><span></span><span></span>
-          <div class="canopy"></div>
-          <div class="lamp lamp-left"></div>
-          <div class="lamp lamp-right"></div>
-        </div>
+<!--        <div class="mandap">-->
+<!--          <span></span><span></span><span></span><span></span>-->
+<!--          <div class="canopy"></div>-->
+<!--          <div class="lamp lamp-left"></div>-->
+<!--          <div class="lamp lamp-right"></div>-->
+<!--        </div>-->
       </div>
 
       <div class="invite-shell" data-invite>
@@ -74,7 +74,8 @@
     <section class="events-section" id="events" data-section>
       <div class="section-heading">
         <p class="eyebrow">The Celebration</p>
-        <h2>Choose an event</h2>
+        <h3>Choose an event</h3>
+        <p></p>
       </div>
 
       <div class="event-layout">
@@ -84,12 +85,12 @@
         </div>
 
         <article class="event-detail" data-event-panel>
-          <div>
-            <p class="event-kicker">Wedding Ceremony</p>
+          <div class="section-heading">
+            <p class="eyebrow event-kicker">Wedding Ceremony</p>
             <h3>Girideepam Convention Centre</h3>
             <p>Sunday, 23 August 2026 at 12:05 PM</p>
+            <a class="map-link" href="https://www.google.com/maps?q=Girideepam+Convention+Centre" target="_blank" rel="noopener">Open map</a>
           </div>
-          <a class="map-link" href="https://www.google.com/maps?q=Girideepam+Convention+Centre" target="_blank" rel="noopener">Open map</a>
         </article>
 
       </div>
@@ -97,8 +98,7 @@
 
     <section class="gallery-section" id="gallery" data-section>
       <div class="section-heading">
-        <p class="eyebrow">Moments</p>
-        <h2>Swipe through the story</h2>
+        <p class="eyebrow">Swipe through the story</>
       </div>
 
       <div class="gallery-stage">
@@ -135,7 +135,8 @@
     <section class="rsvp-section" id="rsvp" data-section>
       <div class="section-heading">
         <p class="eyebrow">Join Us</p>
-        <h2>Send your RSVP</h2>
+        <h3>Send your RSVP</h3>
+        <p></p>
       </div>
 
       <div class="rsvp-grid">
@@ -147,18 +148,20 @@
 
           <fieldset>
             <legend>Will you attend?</legend>
+            <br>
             <div class="choice-row" role="radiogroup" aria-label="Attendance">
               <label><input type="radio" name="attending" value="Yes" checked><span>Yes</span></label>
               <label><input type="radio" name="attending" value="No"><span>No</span></label>
             </div>
           </fieldset>
-
+          <br>
           <label>
             Guests
             <input type="range" id="guests" min="0" max="6" value="1">
             <span class="guest-readout"><output id="guestValue">1</output> guest</span>
           </label>
 
+          <br>
           <label>
             Message
             <textarea id="message" name="message" rows="4" placeholder="A note for the couple"></textarea>

@@ -8,8 +8,8 @@
   --sage: #6f8069;
   --teal: #385d68;
   --heading-font: "Playfair Display", Georgia, serif;
+  --body-font: "Cormorant Upright", Georgia, serif;
   --couple-font: "Cormorant Garamond", Georgia, serif;
-  --body-font: Lora, Georgia, serif;
   --shadow: 0 28px 80px rgba(19, 43, 37, 0.22);
 }
 
@@ -276,10 +276,12 @@ main {
   border-radius: 50%;
   color: #fff8ee;
   background: radial-gradient(circle at 35% 28%, #8d5a6b, var(--wine));
-  font-family: var(--heading-font);
+  font-family: "Ballet", cursive;
   font-size: 1.45rem;
-  font-weight: 700;
+  font-weight: 400;
   transform: translateX(-50%);
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
 .invite-shell.is-open .envelope {
@@ -386,8 +388,10 @@ main {
 .eyebrow {
   margin: 0 0 0.8rem;
   color: var(--teal);
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-family: "Cormorant Upright", serif;
+  --font-size:0.72 rem;
+  font-size: clamp(0.8rem, 1vw, 0.8rem);
+  font-weight: 100;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -396,10 +400,18 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-family: var(--heading-font);
-  line-height: 0.95;
+  line-height: 1;
   letter-spacing: 0;
+  font-family: "Cormorant Upright", serif;
+  font-size:1em;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: light;
+  letter-spacing:0.05em;
+
 }
+
+
 
 h1 {
   color: #7d3345;
@@ -438,12 +450,17 @@ h2 {
 h3 {
   color: var(--wine);
   font-size: clamp(2rem, 5vw, 3.8rem);
+  --text-transform: uppercase;
+  font-size: clamp(1.35rem, 3.5vw, 2.4rem);
 }
 
 .date-line {
   margin: 1.3rem 0 2rem;
-  color: #425149;
-  font-weight: 700;
+  -- color: #425149;
+  font-weight: 100;
+  font-family (var(--body-font));
+  font-size: clamp(1.5rem, 1.5vw, 2.25rem);
+  color: #8b6767
 }
 
 .countdown {
@@ -557,7 +574,7 @@ h3 {
 }
 
 .section-heading {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5 rem;
 }
 
 .event-layout,
@@ -598,20 +615,25 @@ h3 {
 .event-detail {
   display: grid;
   grid-column: 1 / -1;
-  align-content: space-between;
-  min-height: 22rem;
+  align-content: start;
+  min-height: 10rem;
   padding: clamp(1.4rem, 4vw, 2rem);
+}
+
+.event-detail h3 {
+  font-size: clamp(1.35rem, 3.5vw, 2.4rem);
+  text-transform: uppercase;
 }
 
 .event-kicker {
   margin: 0 0 0.7rem;
-  color: var(--rose);
-  font-weight: 800;
+  font-size: clamp(0.8rem, 1vw, 0.8rem);
+
 }
 
 .event-detail p:not(.event-kicker) {
   color: #425149;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 .gallery-stage {

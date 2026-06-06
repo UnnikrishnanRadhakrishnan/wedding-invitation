@@ -8,8 +8,8 @@
   --sage: #6f8069;
   --teal: #385d68;
   --heading-font: "Playfair Display", Georgia, serif;
+  --body-font: "Cormorant Upright", Georgia, serif;
   --couple-font: "Cormorant Garamond", Georgia, serif;
-  --body-font: Lora, Georgia, serif;
   --shadow: 0 28px 80px rgba(19, 43, 37, 0.22);
 }
 
@@ -61,7 +61,7 @@ main {
   position: fixed;
   inset: 0;
   width: 100%;
-  z-index: 0;
+  z-index: 10;
   pointer-events: none;
   overflow: clip;
   contain: paint;
@@ -97,6 +97,27 @@ main {
   padding: 5rem clamp(1rem, 4vw, 5rem) 7rem;
   place-items: center;
   overflow-x: clip;
+  /* background removed so the standalone <img> is the single photo (no duplicate) */
+  background-image: none;
+}
+
+
+.hero-image {
+  position: relative;
+  width: 100%;
+  max-height: 60vh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.hero-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: grayscale(100%) contrast(1.1);
 }
 
 .hero-art {
@@ -222,6 +243,15 @@ main {
   transition: transform 850ms cubic-bezier(.22, 1, .36, 1);
 }
 
+.envelope-names {
+  font-family: "Tangerine", Georgia, serif;
+  font-size: clamp(1.8rem, 6vw, 3.3rem);
+  line-height: 0.9;
+  font-weight: 700;
+  display: block;
+}
+
+
 .envelope-card small {
   text-transform: uppercase;
   font-size: 0.74rem;
@@ -246,10 +276,12 @@ main {
   border-radius: 50%;
   color: #fff8ee;
   background: radial-gradient(circle at 35% 28%, #8d5a6b, var(--wine));
-  font-family: var(--heading-font);
+  font-family: "Ballet", cursive;
   font-size: 1.45rem;
-  font-weight: 700;
+  font-weight: 400;
   transform: translateX(-50%);
+  font-optical-sizing: auto;
+  font-style: normal;
 }
 
 .invite-shell.is-open .envelope {
@@ -283,6 +315,71 @@ main {
   transition: transform 900ms cubic-bezier(.22, 1, .36, 1), opacity 600ms ease;
 }
 
+/* panel photo wrapper - extend to edges of invitation-panel */
+/* panel photo wrapper - basic layout */
+/* panel photo wrapper - fill the entire invitation panel */
+.panel-photo-wrap {
+  position: relative;
+  display: block;
+  width: calc(100% + clamp(4rem, 12vw, 9.6rem));
+  text-align: center;
+  margin: 0 0 1rem;
+  z-index: 3;
+  margin-left: calc(-1 * clamp(2rem, 6vw, 4.8rem));
+  margin-right: calc(-1 * clamp(2rem, 6vw, 4.8rem));
+  margin-top: calc(-1 * clamp(2rem, 6vw, 4.8rem));
+}
+
+
+
+/* Adjust photo margins for mobile */
+@media (max-width: 560px) {
+  .panel-photo-wrap {
+    width: calc(100% + clamp(1.8rem, 10vw, 3rem));
+    margin-left: calc(-1 * clamp(0.9rem, 5vw, 1.5rem));
+    margin-right: calc(-1 * clamp(0.9rem, 5vw, 1.5rem));
+    margin-top: calc(-1 * clamp(2rem, 8vw, 3rem));
+  }
+
+  .panel-photo-outside {
+    width: 100%;
+  }
+}
+
+
+
+
+/* make the photo fill the wrapper completely */
+.panel-photo-outside {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 1rem;
+  object-fit: cover;
+  box-shadow: 0 22px 60px rgba(19, 43, 37, 0.12);
+  border: none;
+  background-color: transparent;
+  padding: 0;
+
+  /* Soft radial edges + bottom fade */
+  -webkit-mask-image:
+    radial-gradient(ellipse at center, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+  mask-image:
+    radial-gradient(ellipse at center, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%),
+    linear-gradient(to bottom, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+
+  /* Softer, more natural blending */
+  mix-blend-mode: overlay;
+  opacity: 0.92;
+}
+
 .invite-shell.is-open .invitation-panel {
   opacity: 1;
   transform: translateY(0) scale(1);
@@ -291,8 +388,10 @@ main {
 .eyebrow {
   margin: 0 0 0.8rem;
   color: var(--teal);
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-family: "Cormorant Upright", serif;
+  --font-size:0.72 rem;
+  font-size: clamp(1.2rem, 1vw, 0.8rem);
+  font-weight: 300;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
@@ -301,32 +400,44 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-family: var(--heading-font);
-  line-height: 0.95;
+  line-height: 1;
   letter-spacing: 0;
+  font-family: "Cormorant Upright", serif;
+  font-size:1em;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: light;
+  letter-spacing:0.05em;
+
 }
+
+
 
 h1 {
   color: #7d3345;
-  font-family: var(--couple-font);
+  font-family: "Tangerine", Georgia, serif;
   font-size: clamp(3.2rem, 9.5vw, 6.9rem);
-  font-weight: 600;
+  font-weight: 100;
   overflow-wrap: anywhere;
 }
 
 h1 span {
   display: block;
   margin: 0.25rem 0;
-  color: var(--gold);
+  color: #8b6767;
   font-size: clamp(1.4rem, 4vw, 2.3rem);
   font-style: italic;
+  font-family: "Tangerine", Georgia, serif;
+  font-weight: 100;
 }
+
 
 h1 .name-line {
   max-width: 100%;
-  color: #7d3345;
-  font-size: clamp(3.2rem, 9.5vw, 6.9rem);
-  font-weight: 600;
+  color: #8b6767;
+  font-family: "Tangerine", Georgia, serif;
+  font-size: clamp(2.2rem, 5.5vw, 5.9rem);
+  font-weight: 100;
   font-style: normal;
   line-height: 0.88;
 }
@@ -339,12 +450,17 @@ h2 {
 h3 {
   color: var(--wine);
   font-size: clamp(2rem, 5vw, 3.8rem);
+  --text-transform: uppercase;
+  font-size: clamp(1.35rem, 3.5vw, 2.4rem);
 }
 
 .date-line {
   margin: 1.3rem 0 2rem;
-  color: #425149;
-  font-weight: 700;
+  -- color: #425149;
+  font-weight: 100;
+  font-family (var(--body-font));
+  font-size: clamp(1.5rem, 1.5vw, 2.25rem);
+  color: #8b6767
 }
 
 .countdown {
@@ -458,7 +574,7 @@ h3 {
 }
 
 .section-heading {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5 rem;
 }
 
 .event-layout,
@@ -498,37 +614,26 @@ h3 {
 
 .event-detail {
   display: grid;
-  align-content: space-between;
-  min-height: 22rem;
+  grid-column: 1 / -1;
+  align-content: start;
+  min-height: 10rem;
   padding: clamp(1.4rem, 4vw, 2rem);
+}
+
+.event-detail h3 {
+  font-size: clamp(1.35rem, 3.5vw, 2.4rem);
+  text-transform: uppercase;
 }
 
 .event-kicker {
   margin: 0 0 0.7rem;
-  color: var(--rose);
-  font-weight: 800;
+  font-size: clamp(0.8rem, 1vw, 0.8rem);
+
 }
 
 .event-detail p:not(.event-kicker) {
   color: #425149;
-  font-weight: 600;
-}
-
-.map-frame {
-  min-height: 22rem;
-  overflow: hidden;
-  border: 1px solid rgba(98, 29, 44, 0.13);
-  border-radius: 0.8rem;
-  background: #e9ded3;
-  box-shadow: 0 20px 60px rgba(54, 20, 25, 0.12);
-}
-
-.map-frame iframe {
-  width: 100%;
-  height: 100%;
-  min-height: 22rem;
-  border: 0;
-  filter: saturate(0.9) contrast(0.95);
+  font-weight: 300;
 }
 
 .gallery-stage {
@@ -940,10 +1045,12 @@ input[type="range"] {
 
   h1 {
     font-size: clamp(2.5rem, 13vw, 4.15rem);
+    font-weight: 100;
   }
 
   h1 .name-line {
     font-size: clamp(2.5rem, 13vw, 4.15rem);
+    font-weight: 100;
   }
 
   .countdown {
@@ -984,7 +1091,6 @@ input[type="range"] {
   }
 
   .event-detail,
-  .map-frame,
   .rsvp-form,
   .rsvp-preview {
     width: 100%;

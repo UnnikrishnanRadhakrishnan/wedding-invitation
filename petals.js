@@ -9,10 +9,14 @@ const guestInput = document.querySelector("#guests");
 const guestValue = document.querySelector("#guestValue");
 const nameInput = document.querySelector("#name");
 const messageInput = document.querySelector("#message");
-const previewName = document.querySelector("[data-preview-name]");
-const previewAttending = document.querySelector("[data-preview-attending]");
-const previewMessage = document.querySelector("[data-preview-message]");
 const formMessage = document.querySelector("#msg");
+const rsvpModal = document.querySelector("[data-rsvp-modal]");
+const rsvpModalCloseButtons = document.querySelectorAll("[data-close-rsvp-modal]");
+const rsvpSummaryName = document.querySelector("[data-rsvp-summary-name]");
+const rsvpSummaryAttending = document.querySelector("[data-rsvp-summary-attending]");
+const rsvpSummaryGuests = document.querySelector("[data-rsvp-summary-guests]");
+const rsvpSummaryMessage = document.querySelector("[data-rsvp-summary-message]");
+const rsvpSummaryMessageRow = document.querySelector("[data-rsvp-summary-message-row]");
 const videoModal = document.querySelector("[data-video-modal]");
 const videoFormLink = document.querySelector("[data-video-form-link]");
 const videoModalCloseButtons = document.querySelectorAll("[data-close-video-modal]");
@@ -29,12 +33,14 @@ const events = {
   wedding: {
     kicker: "Wedding Ceremony",
     title: "Girideepam Convention Centre",
+    location: "Inside Mar Ivanios Vidya Nagar Main Gate, Nalanchira, Trivandrum",
     detail: "Sunday, 23 August 2026 at 12:05 PM",
     query: "Girideepam+Convention+Centre"
   },
   reception: {
     kicker: "Reception",
     title: "RDR Convention Centre",
+    location: "Edapazhanji, Trivandrum",
     detail: "Monday, 24 August 2026 at 5:30 PM",
     query: "RDR+Convention+Centre"
   }
@@ -105,6 +111,7 @@ function updateEvent(key) {
     <div class="section-heading">
       <p class="eyebrow event-kicker">${event.kicker}</p>
       <h3>${event.title}</h3>
+      <p><i>${event.location}</i></p>
       <p>${event.detail}</p>
       <a class="map-link" href="https://www.google.com/maps?q=${event.query}" target="_blank" rel="noopener">Open map</a>
     </div>
@@ -133,19 +140,29 @@ function buildGalleryDots() {
   setSlide(0);
 }
 
-function updatePreview() {
-  const name = nameInput.value.trim() || "Your name";
-  const attending = form.elements.attending.value;
-  const guestCount = Number(guestInput.value);
-  const message = messageInput.value.trim() || "Write a little note and it will appear here.";
+function updateGuestReadout() {
+  guestValue.textContent = guestInput.value;
+}
+
+function openRsvpModal(data) {
+  const guestCount = Number(data.guests);
   const guestLabel = guestCount === 1 ? "1 guest" : `${guestCount} guests`;
 
-  guestValue.textContent = guestCount;
-  previewName.textContent = name;
-  previewAttending.textContent = attending === "Yes"
-    ? `Will attend with ${guestLabel}.`
-    : "Cannot attend, but sends warm wishes.";
-  previewMessage.textContent = message;
+  rsvpSummaryName.textContent = data.name;
+  rsvpSummaryAttending.textContent = data.attending === "Yes"
+    ? "Yes, attending"
+    : "No, unable to attend";
+  rsvpSummaryGuests.textContent = guestLabel;
+  rsvpSummaryMessage.textContent = data.message;
+  rsvpSummaryMessageRow.hidden = !data.message;
+  rsvpModal.classList.add("is-open");
+  rsvpModal.setAttribute("aria-hidden", "false");
+  rsvpModal.querySelector("button[data-close-rsvp-modal]").focus();
+}
+
+function closeRsvpModal() {
+  rsvpModal.classList.remove("is-open");
+  rsvpModal.setAttribute("aria-hidden", "true");
 }
 
 function openVideoModal() {
@@ -191,9 +208,13 @@ async function submitRsvp(event) {
     formMessage.textContent = "Thank you. Your RSVP has been recorded.";
     formMessage.style.color = "#0f6b70";
     const shouldPromptForVideo = data.attending === "No";
+    const shouldShowRsvpModal = data.attending === "Yes";
     form.reset();
     guestInput.value = "1";
-    updatePreview();
+    updateGuestReadout();
+    if (shouldShowRsvpModal) {
+      openRsvpModal(data);
+    }
     if (shouldPromptForVideo) {
       openVideoModal();
     }
@@ -242,10 +263,7 @@ galleryTrack.addEventListener("touchend", (event) => {
   }
 }, { passive: true });
 eventTabs.forEach((tab) => tab.addEventListener("click", () => updateEvent(tab.dataset.eventTab)));
-form.addEventListener("input", updatePreview);
-form.addEventListener("change", () => {
-  updatePreview();
-});
+guestInput.addEventListener("input", updateGuestReadout);
 form.addEventListener("submit", submitRsvp);
 if (videoFormUrl) {
   videoFormLink.href = videoFormUrl;
@@ -255,7 +273,11 @@ if (videoFormUrl) {
   videoFormLink.textContent = "Upload form coming soon";
 }
 videoModalCloseButtons.forEach((button) => button.addEventListener("click", closeVideoModal));
+rsvpModalCloseButtons.forEach((button) => button.addEventListener("click", closeRsvpModal));
 document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && rsvpModal.classList.contains("is-open")) {
+    closeRsvpModal();
+  }
   if (event.key === "Escape" && videoModal.classList.contains("is-open")) {
     closeVideoModal();
   }
@@ -273,7 +295,7 @@ window.addEventListener("pointermove", (event) => {
 createPetals();
 buildGalleryDots();
 updateCountdown();
-updatePreview();
+updateGuestReadout();
 watchSections();
 setInterval(updateCountdown, 1000);
 setTimeout(openInvite, 1200);

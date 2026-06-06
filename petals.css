@@ -627,7 +627,7 @@ h3 {
 
 .event-kicker {
   margin: 0 0 0.7rem;
-  font-size: clamp(1.2rem, 1vw, 0.8rem);
+  font-size: clamp(0.8rem, 1vw, 0.8rem);
 
 }
 

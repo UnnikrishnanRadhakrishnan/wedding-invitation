@@ -315,27 +315,35 @@ main {
 
 /* panel photo wrapper - extend to edges of invitation-panel */
 /* panel photo wrapper - basic layout */
+/* panel photo wrapper - fill the entire invitation panel */
 .panel-photo-wrap {
   position: relative;
   display: block;
-  width: 100%;
+  width: calc(100% + clamp(4rem, 12vw, 9.6rem));
   text-align: center;
   margin: 0 0 1rem;
   z-index: 3;
+  margin-left: calc(-1 * clamp(2rem, 6vw, 4.8rem));
+  margin-right: calc(-1 * clamp(2rem, 6vw, 4.8rem));
+  margin-top: calc(-1 * clamp(2rem, 6vw, 4.8rem));
 }
+
 
 
 /* Adjust photo margins for mobile */
 @media (max-width: 560px) {
   .panel-photo-wrap {
-    width: 100%;
-    margin: 0 0 1rem;
+    width: calc(100% + clamp(1.8rem, 10vw, 3rem));
+    margin-left: calc(-1 * clamp(0.9rem, 5vw, 1.5rem));
+    margin-right: calc(-1 * clamp(0.9rem, 5vw, 1.5rem));
+    margin-top: calc(-1 * clamp(2rem, 8vw, 3rem));
   }
 
   .panel-photo-outside {
     width: 100%;
   }
 }
+
 
 
 

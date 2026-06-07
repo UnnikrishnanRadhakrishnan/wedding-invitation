@@ -1,6 +1,7 @@
 const weddingDate = new Date("2026-08-23T12:05:00+05:30").getTime();
 const invite = document.querySelector("[data-invite]");
 const openInviteButton = document.querySelector("[data-open-invite]");
+const music = document.querySelector("#music");
 const countdown = document.querySelector("#countdown");
 const petalField = document.querySelector(".petal-field");
 const lightTrail = document.querySelector(".light-trail");
@@ -56,8 +57,20 @@ const events = {
 
 const videoFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd532EJfObF-dDajoLiJIW6bGWpgQ9JrgJq_1UTQ7hAuQ9g2A/viewform";
 
+function startInviteMusic() {
+  if (!music || !music.paused) {
+    return;
+  }
+
+  music.volume = 0.34;
+  music.play().catch(() => {
+    // Browsers only allow audio after a user gesture.
+  });
+}
+
 function openInvite() {
   invite.classList.add("is-open");
+  startInviteMusic();
 }
 
 function updateCountdown() {
@@ -306,6 +319,8 @@ function watchSections() {
 }
 
 openInviteButton.addEventListener("click", openInvite);
+document.addEventListener("click", startInviteMusic, { once: true });
+document.addEventListener("touchstart", startInviteMusic, { once: true, passive: true });
 document.querySelector("[data-gallery-prev]").addEventListener("click", () => setSlide(activeSlide - 1));
 document.querySelector("[data-gallery-next]").addEventListener("click", () => setSlide(activeSlide + 1));
 galleryTrack.addEventListener("touchstart", (event) => {
@@ -357,5 +372,6 @@ buildGalleryDots();
 updateCountdown();
 updateGuestReadout();
 watchSections();
+startInviteMusic();
 setInterval(updateCountdown, 1000);
 setTimeout(openInvite, 1200);

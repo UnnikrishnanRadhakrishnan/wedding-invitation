@@ -906,6 +906,29 @@ textarea {
   resize: vertical;
 }
 
+.site-footer {
+  position: relative;
+  z-index: 1;
+  width: min(70rem, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.5rem 0 2.5rem;
+  color: rgba(29, 36, 32, 0.68);
+  font-family: Georgia, serif;
+  font-size: 0.4rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.site-footer p {
+  margin: 0.25rem 0;
+}
+
+.site-footer a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 input:focus,
 textarea:focus {
   border-color: var(--teal);

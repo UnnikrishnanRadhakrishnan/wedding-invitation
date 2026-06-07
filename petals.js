@@ -157,11 +157,31 @@ function revealSangeethEvent() {
   }
 }
 
+function updateGalleryFrame() {
+  const activeImage = slides[activeSlide]?.querySelector(".memory-photo");
+
+  if (!activeImage) {
+    return;
+  }
+
+  if (activeImage.naturalWidth && activeImage.naturalHeight) {
+    galleryTrack.style.setProperty("--gallery-aspect", activeImage.naturalWidth / activeImage.naturalHeight);
+    return;
+  }
+
+  activeImage.addEventListener("load", () => {
+    if (slides[activeSlide]?.contains(activeImage)) {
+      galleryTrack.style.setProperty("--gallery-aspect", activeImage.naturalWidth / activeImage.naturalHeight);
+    }
+  }, { once: true });
+}
+
 function setSlide(index) {
   activeSlide = (index + slides.length) % slides.length;
   slides.forEach((slide, slideIndex) => {
     slide.classList.toggle("is-active", slideIndex === activeSlide);
   });
+  updateGalleryFrame();
   galleryDots.querySelectorAll("button").forEach((dot, dotIndex) => {
     dot.classList.toggle("is-active", dotIndex === activeSlide);
     dot.setAttribute("aria-current", dotIndex === activeSlide ? "true" : "false");

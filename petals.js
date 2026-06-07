@@ -48,7 +48,7 @@ const events = {
   sangeeth: {
     kicker: "Sangeeth",
     title: "Sangeeth Celebration",
-    location: "Location shared privately",
+    location: "Ambalathara, Trivandrum",
     detail: "An evening of music, dance, and celebration",
     mapUrl: "https://maps.app.goo.gl/STb2p3m6F3wfmBWU6?g_st=iw"
   }

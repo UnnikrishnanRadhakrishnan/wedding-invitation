@@ -299,23 +299,46 @@ async function submitRsvp(event) {
 function watchSections() {
   const dockLinks = [...document.querySelectorAll(".section-dock a")];
   const sections = [...document.querySelectorAll("[data-section]")];
-  const observer = new IntersectionObserver((entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  let pendingFrame = null;
 
-    if (!visible) {
+  function setActiveLink(sectionId) {
+    dockLinks.forEach((link) => {
+      link.classList.toggle("is-active", link.getAttribute("href") === `#${sectionId}`);
+    });
+  }
+
+  function updateActiveSection() {
+    pendingFrame = null;
+    const focusLine = window.innerHeight * 0.38;
+    let activeSection = sections[0];
+
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+
+      if (rect.top <= focusLine && rect.bottom > focusLine) {
+        activeSection = section;
+      }
+    });
+
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+      activeSection = sections[sections.length - 1];
+    }
+
+    setActiveLink(activeSection.id);
+  }
+
+  function requestActiveSectionUpdate() {
+    if (pendingFrame) {
       return;
     }
 
-    dockLinks.forEach((link) => {
-      link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`);
-    });
-  }, {
-    threshold: [0.36, 0.6]
-  });
+    pendingFrame = requestAnimationFrame(updateActiveSection);
+  }
 
-  sections.forEach((section) => observer.observe(section));
+  updateActiveSection();
+  window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+  window.addEventListener("resize", requestActiveSectionUpdate);
+  window.addEventListener("load", updateActiveSection);
 }
 
 openInviteButton.addEventListener("click", openInvite);

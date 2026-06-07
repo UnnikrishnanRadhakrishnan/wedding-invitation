@@ -49,7 +49,7 @@ const events = {
     kicker: "Sangeeth",
     title: "BM Convention Centre",
     location: "Ambalathara, Trivandrum",
-    detail: "An evening of music, dance, and celebration",
+    detail: "Friday, 21 August 2026 at 4:00 PM",
     mapUrl: "https://maps.app.goo.gl/STb2p3m6F3wfmBWU6?g_st=iw"
   }
 };

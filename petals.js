@@ -299,6 +299,7 @@ async function submitRsvp(event) {
 function watchSections() {
   const dockLinks = [...document.querySelectorAll(".section-dock a")];
   const sections = [...document.querySelectorAll("[data-section]")];
+  const dock = document.querySelector(".section-dock");
   let pendingFrame = null;
 
   function setActiveLink(sectionId) {
@@ -309,13 +310,13 @@ function watchSections() {
 
   function updateActiveSection() {
     pendingFrame = null;
-    const focusLine = window.innerHeight * 0.38;
+    const activationPoint = window.scrollY + (dock?.offsetHeight || 0) + 36;
     let activeSection = sections[0];
 
     sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
 
-      if (rect.top <= focusLine && rect.bottom > focusLine) {
+      if (sectionTop <= activationPoint) {
         activeSection = section;
       }
     });

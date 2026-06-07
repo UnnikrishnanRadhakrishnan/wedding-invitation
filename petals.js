@@ -30,6 +30,7 @@ const galleryTrack = document.querySelector("[data-gallery-track]");
 let activeSlide = 0;
 let touchStartX = 0;
 let touchStartY = 0;
+let resumeMusicOnVisible = false;
 
 const events = {
   wedding: {
@@ -58,7 +59,7 @@ const events = {
 const videoFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd532EJfObF-dDajoLiJIW6bGWpgQ9JrgJq_1UTQ7hAuQ9g2A/viewform";
 
 function startInviteMusic() {
-  if (!music || !music.paused) {
+  if (!music || !music.paused || document.hidden) {
     return;
   }
 
@@ -66,6 +67,40 @@ function startInviteMusic() {
   music.play().catch(() => {
     // Browsers only allow audio after a user gesture.
   });
+}
+
+function pauseInviteMusic() {
+  if (!music || music.paused) {
+    return;
+  }
+
+  music.pause();
+}
+
+function handlePageVisibilityChange() {
+  if (!music) {
+    return;
+  }
+
+  if (document.hidden) {
+    resumeMusicOnVisible = !music.paused;
+    pauseInviteMusic();
+    return;
+  }
+
+  if (resumeMusicOnVisible && invite.classList.contains("is-open")) {
+    resumeMusicOnVisible = false;
+    startInviteMusic();
+  }
+}
+
+function handlePageHide() {
+  if (!music) {
+    return;
+  }
+
+  resumeMusicOnVisible = !music.paused;
+  pauseInviteMusic();
 }
 
 function openInvite() {
@@ -345,6 +380,9 @@ function watchSections() {
 openInviteButton.addEventListener("click", openInvite);
 document.addEventListener("click", startInviteMusic, { once: true });
 document.addEventListener("touchstart", startInviteMusic, { once: true, passive: true });
+document.addEventListener("visibilitychange", handlePageVisibilityChange);
+window.addEventListener("pagehide", handlePageHide);
+window.addEventListener("pageshow", handlePageVisibilityChange);
 document.querySelector("[data-gallery-prev]").addEventListener("click", () => setSlide(activeSlide - 1));
 document.querySelector("[data-gallery-next]").addEventListener("click", () => setSlide(activeSlide + 1));
 galleryTrack.addEventListener("touchstart", (event) => {

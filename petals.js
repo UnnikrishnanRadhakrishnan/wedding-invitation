@@ -184,44 +184,22 @@ function hasSangeethAccess() {
     || params.has("sangeeth");
 }
 
-function shouldHideReception() {
-  return new URLSearchParams(window.location.search).get("reception") === "0";
-}
-
-function shouldOpenSangeethEvent() {
-  return window.location.hash === "#sangeeth"
-    || new URLSearchParams(window.location.search).get("event") === "sangeeth";
-}
-
-function addEventTab(key) {
-  if (!eventTabList || document.querySelector(`[data-event-tab="${key}"]`)) {
+function revealSangeethEvent() {
+  if (!hasSangeethAccess() || !eventTabList) {
     return;
   }
 
-  const tab = document.createElement("button");
-  tab.type = "button";
-  tab.className = "event-tab";
-  tab.setAttribute("role", "tab");
-  tab.setAttribute("aria-selected", "false");
-  tab.dataset.eventTab = key;
-  tab.textContent = events[key].kicker;
-  tab.addEventListener("click", () => updateEvent(key));
-  eventTabList.appendChild(tab);
-}
+  const sangeethTab = document.createElement("button");
+  sangeethTab.type = "button";
+  sangeethTab.className = "event-tab";
+  sangeethTab.setAttribute("role", "tab");
+  sangeethTab.setAttribute("aria-selected", "false");
+  sangeethTab.dataset.eventTab = "sangeeth";
+  sangeethTab.textContent = "Sangeeth";
+  sangeethTab.addEventListener("click", () => updateEvent("sangeeth"));
+  eventTabList.appendChild(sangeethTab);
 
-function setupOptionalEvents() {
-  const hideReception = shouldHideReception();
-  const showSangeeth = hideReception || hasSangeethAccess();
-
-  if (hideReception) {
-    document.querySelector('[data-event-tab="reception"]')?.remove();
-  }
-
-  if (showSangeeth) {
-    addEventTab("sangeeth");
-  }
-
-  if (shouldOpenSangeethEvent()) {
+  if (window.location.hash === "#sangeeth" || new URLSearchParams(window.location.search).get("event") === "sangeeth") {
     updateEvent("sangeeth");
     document.querySelector("#events").scrollIntoView({ block: "start" });
   }
@@ -421,7 +399,7 @@ galleryTrack.addEventListener("touchend", (event) => {
   }
 }, { passive: true });
 eventTabs.forEach((tab) => tab.addEventListener("click", () => updateEvent(tab.dataset.eventTab)));
-setupOptionalEvents();
+revealSangeethEvent();
 guestInput.addEventListener("input", updateGuestReadout);
 form.addEventListener("submit", submitRsvp);
 if (videoFormUrl) {

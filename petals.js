@@ -188,6 +188,11 @@ function shouldHideReception() {
   return new URLSearchParams(window.location.search).get("reception") === "0";
 }
 
+function shouldOpenSangeethEvent() {
+  return window.location.hash === "#sangeeth"
+    || new URLSearchParams(window.location.search).get("event") === "sangeeth";
+}
+
 function addEventTab(key) {
   if (!eventTabList || document.querySelector(`[data-event-tab="${key}"]`)) {
     return;
@@ -216,7 +221,7 @@ function setupOptionalEvents() {
     addEventTab("sangeeth");
   }
 
-  if (hideReception || hasSangeethAccess()) {
+  if (shouldOpenSangeethEvent()) {
     updateEvent("sangeeth");
     document.querySelector("#events").scrollIntoView({ block: "start" });
   }

@@ -174,7 +174,7 @@ function updateEvent(key) {
   `;
 }
 
-function isSangeethRequested() {
+function hasSangeethAccess() {
   const params = new URLSearchParams(window.location.search);
   const invite = params.get("invite");
   const event = params.get("event");
@@ -184,40 +184,22 @@ function isSangeethRequested() {
     || params.has("sangeeth");
 }
 
-function shouldHideReception() {
-  return new URLSearchParams(window.location.search).get("reception") === "0";
-}
-
-function addEventTab(key) {
-  if (!eventTabList || document.querySelector(`[data-event-tab="${key}"]`)) {
-    return null;
+function revealSangeethEvent() {
+  if (!hasSangeethAccess() || !eventTabList) {
+    return;
   }
 
-  const tab = document.createElement("button");
-  tab.type = "button";
-  tab.className = "event-tab";
-  tab.setAttribute("role", "tab");
-  tab.setAttribute("aria-selected", "false");
-  tab.dataset.eventTab = key;
-  tab.textContent = events[key].kicker;
-  tab.addEventListener("click", () => updateEvent(key));
-  eventTabList.appendChild(tab);
-  return tab;
-}
+  const sangeethTab = document.createElement("button");
+  sangeethTab.type = "button";
+  sangeethTab.className = "event-tab";
+  sangeethTab.setAttribute("role", "tab");
+  sangeethTab.setAttribute("aria-selected", "false");
+  sangeethTab.dataset.eventTab = "sangeeth";
+  sangeethTab.textContent = "Sangeeth";
+  sangeethTab.addEventListener("click", () => updateEvent("sangeeth"));
+  eventTabList.appendChild(sangeethTab);
 
-function setupOptionalEvents() {
-  const hideReception = shouldHideReception();
-  const showSangeeth = hideReception || isSangeethRequested();
-
-  if (hideReception) {
-    document.querySelector('[data-event-tab="reception"]')?.remove();
-  }
-
-  if (showSangeeth) {
-    addEventTab("sangeeth");
-  }
-
-  if (hideReception || isSangeethRequested()) {
+  if (window.location.hash === "#sangeeth" || new URLSearchParams(window.location.search).get("event") === "sangeeth") {
     updateEvent("sangeeth");
     document.querySelector("#events").scrollIntoView({ block: "start" });
   }

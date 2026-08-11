@@ -1,6 +1,7 @@
 const weddingDate = new Date("2026-08-23T12:05:00+05:30").getTime();
 const invite = document.querySelector("[data-invite]");
 const openInviteButton = document.querySelector("[data-open-invite]");
+const music = document.querySelector("#music");
 const countdown = document.querySelector("#countdown");
 const petalField = document.querySelector(".petal-field");
 const lightTrail = document.querySelector(".light-trail");
@@ -21,13 +22,17 @@ const videoModal = document.querySelector("[data-video-modal]");
 const videoFormLink = document.querySelector("[data-video-form-link]");
 const videoModalCloseButtons = document.querySelectorAll("[data-close-video-modal]");
 const eventTabs = document.querySelectorAll("[data-event-tab]");
+const eventTabList = document.querySelector("[role='tablist'][aria-label='Wedding events']");
 const eventPanel = document.querySelector("[data-event-panel]");
+const gallerySection = document.querySelector("#gallery");
+const galleryDockLink = document.querySelector('.section-dock a[href="#gallery"]');
 const slides = [...document.querySelectorAll("[data-slide]")];
 const galleryDots = document.querySelector("[data-gallery-dots]");
 const galleryTrack = document.querySelector("[data-gallery-track]");
 let activeSlide = 0;
 let touchStartX = 0;
 let touchStartY = 0;
+let resumeMusicOnVisible = false;
 
 const events = {
   wedding: {
@@ -35,21 +40,74 @@ const events = {
     title: "Girideepam Convention Centre",
     location: "Inside Mar Ivanios Vidya Nagar Main Gate, Nalanchira, Trivandrum",
     detail: "Sunday, 23 August 2026 at 12:05 PM",
-    query: "Girideepam+Convention+Centre"
+    mapUrl: "https://www.google.com/maps?q=Girideepam+Convention+Centre"
   },
   reception: {
     kicker: "Reception",
     title: "RDR Convention Centre",
     location: "Edapazhanji, Trivandrum",
     detail: "Monday, 24 August 2026 at 5:30 PM",
-    query: "RDR+Convention+Centre"
+    mapUrl: "https://www.google.com/maps?q=RDR+Convention+Centre"
+  },
+  sangeeth: {
+    kicker: "Sangeeth",
+    title: "BM Convention Centre",
+    location: "Ambalathara, Trivandrum",
+    detail: "Friday, 21 August 2026 at 4:00 PM",
+    mapUrl: "https://maps.app.goo.gl/STb2p3m6F3wfmBWU6?g_st=iw"
   }
 };
 
 const videoFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd532EJfObF-dDajoLiJIW6bGWpgQ9JrgJq_1UTQ7hAuQ9g2A/viewform";
 
+function startInviteMusic() {
+  if (!music || !music.paused || document.hidden) {
+    return;
+  }
+
+  music.volume = 0.34;
+  music.play().catch(() => {
+    // Browsers only allow audio after a user gesture.
+  });
+}
+
+function pauseInviteMusic() {
+  if (!music || music.paused) {
+    return;
+  }
+
+  music.pause();
+}
+
+function handlePageVisibilityChange() {
+  if (!music) {
+    return;
+  }
+
+  if (document.hidden) {
+    resumeMusicOnVisible = !music.paused;
+    pauseInviteMusic();
+    return;
+  }
+
+  if (resumeMusicOnVisible && invite.classList.contains("is-open")) {
+    resumeMusicOnVisible = false;
+    startInviteMusic();
+  }
+}
+
+function handlePageHide() {
+  if (!music) {
+    return;
+  }
+
+  resumeMusicOnVisible = !music.paused;
+  pauseInviteMusic();
+}
+
 function openInvite() {
   invite.classList.add("is-open");
+  startInviteMusic();
 }
 
 function updateCountdown() {
@@ -101,7 +159,7 @@ function createSpark(x, y) {
 
 function updateEvent(key) {
   const event = events[key];
-  eventTabs.forEach((tab) => {
+  document.querySelectorAll("[data-event-tab]").forEach((tab) => {
     const isActive = tab.dataset.eventTab === key;
     tab.classList.toggle("is-active", isActive);
     tab.setAttribute("aria-selected", String(isActive));
@@ -113,9 +171,89 @@ function updateEvent(key) {
       <h3>${event.title}</h3>
       <p><i>${event.location}</i></p>
       <p>${event.detail}</p>
-      <a class="map-link" href="https://www.google.com/maps?q=${event.query}" target="_blank" rel="noopener">Open map</a>
+      <a class="map-link" href="${event.mapUrl}" target="_blank" rel="noopener">Open map</a>
     </div>
   `;
+}
+
+function hasSangeethAccess() {
+  const params = new URLSearchParams(window.location.search);
+  const invite = params.get("invite");
+  const event = params.get("event");
+  return window.location.hash === "#sangeeth"
+    || invite === "sangeeth"
+    || event === "sangeeth"
+    || params.has("sangeeth");
+}
+
+function hasReceptionOverride() {
+  return new URLSearchParams(window.location.search).get("reception") === "1";
+}
+
+function revealSangeethEvent() {
+  if (!hasSangeethAccess() || !eventTabList) {
+    return;
+  }
+
+  const sangeethTab = document.createElement("button");
+  sangeethTab.type = "button";
+  sangeethTab.className = "event-tab";
+  sangeethTab.setAttribute("role", "tab");
+  sangeethTab.setAttribute("aria-selected", "false");
+  sangeethTab.dataset.eventTab = "sangeeth";
+  sangeethTab.textContent = "Sangeeth";
+  sangeethTab.addEventListener("click", () => updateEvent("sangeeth"));
+  eventTabList.appendChild(sangeethTab);
+
+  if (window.location.hash === "#sangeeth" || new URLSearchParams(window.location.search).get("event") === "sangeeth") {
+    updateEvent("sangeeth");
+    document.querySelector("#events").scrollIntoView({ block: "start" });
+  }
+}
+
+function applyReceptionOverride() {
+  if (!hasReceptionOverride()) {
+    return;
+  }
+
+  const receptionTab = document.querySelector('[data-event-tab="reception"]');
+  const sangeethTab = document.querySelector('[data-event-tab="sangeeth"]');
+
+  if (sangeethTab && sangeethTab !== receptionTab) {
+    sangeethTab.remove();
+  }
+
+  if (receptionTab) {
+    receptionTab.dataset.eventTab = "sangeeth";
+    receptionTab.textContent = "Sangeeth";
+  }
+
+  if (gallerySection) {
+    gallerySection.hidden = true;
+  }
+
+  if (galleryDockLink) {
+    galleryDockLink.hidden = true;
+  }
+}
+
+function updateGalleryFrame() {
+  const activeImage = slides[activeSlide]?.querySelector(".memory-photo");
+
+  if (!activeImage) {
+    return;
+  }
+
+  if (activeImage.naturalWidth && activeImage.naturalHeight) {
+    galleryTrack.style.setProperty("--gallery-aspect", activeImage.naturalWidth / activeImage.naturalHeight);
+    return;
+  }
+
+  activeImage.addEventListener("load", () => {
+    if (slides[activeSlide]?.contains(activeImage)) {
+      galleryTrack.style.setProperty("--gallery-aspect", activeImage.naturalWidth / activeImage.naturalHeight);
+    }
+  }, { once: true });
 }
 
 function setSlide(index) {
@@ -123,6 +261,7 @@ function setSlide(index) {
   slides.forEach((slide, slideIndex) => {
     slide.classList.toggle("is-active", slideIndex === activeSlide);
   });
+  updateGalleryFrame();
   galleryDots.querySelectorAll("button").forEach((dot, dotIndex) => {
     dot.classList.toggle("is-active", dotIndex === activeSlide);
     dot.setAttribute("aria-current", dotIndex === activeSlide ? "true" : "false");
@@ -227,26 +366,55 @@ async function submitRsvp(event) {
 function watchSections() {
   const dockLinks = [...document.querySelectorAll(".section-dock a")];
   const sections = [...document.querySelectorAll("[data-section]")];
-  const observer = new IntersectionObserver((entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  const dock = document.querySelector(".section-dock");
+  let pendingFrame = null;
 
-    if (!visible) {
+  function setActiveLink(sectionId) {
+    dockLinks.forEach((link) => {
+      link.classList.toggle("is-active", link.getAttribute("href") === `#${sectionId}`);
+    });
+  }
+
+  function updateActiveSection() {
+    pendingFrame = null;
+    const activationPoint = window.scrollY + (dock?.offsetHeight || 0) + 36;
+    let activeSection = sections[0];
+
+    sections.forEach((section) => {
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+
+      if (sectionTop <= activationPoint) {
+        activeSection = section;
+      }
+    });
+
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+      activeSection = sections[sections.length - 1];
+    }
+
+    setActiveLink(activeSection.id);
+  }
+
+  function requestActiveSectionUpdate() {
+    if (pendingFrame) {
       return;
     }
 
-    dockLinks.forEach((link) => {
-      link.classList.toggle("is-active", link.getAttribute("href") === `#${visible.target.id}`);
-    });
-  }, {
-    threshold: [0.36, 0.6]
-  });
+    pendingFrame = requestAnimationFrame(updateActiveSection);
+  }
 
-  sections.forEach((section) => observer.observe(section));
+  updateActiveSection();
+  window.addEventListener("scroll", requestActiveSectionUpdate, { passive: true });
+  window.addEventListener("resize", requestActiveSectionUpdate);
+  window.addEventListener("load", updateActiveSection);
 }
 
 openInviteButton.addEventListener("click", openInvite);
+document.addEventListener("click", startInviteMusic, { once: true });
+document.addEventListener("touchstart", startInviteMusic, { once: true, passive: true });
+document.addEventListener("visibilitychange", handlePageVisibilityChange);
+window.addEventListener("pagehide", handlePageHide);
+window.addEventListener("pageshow", handlePageVisibilityChange);
 document.querySelector("[data-gallery-prev]").addEventListener("click", () => setSlide(activeSlide - 1));
 document.querySelector("[data-gallery-next]").addEventListener("click", () => setSlide(activeSlide + 1));
 galleryTrack.addEventListener("touchstart", (event) => {
@@ -263,6 +431,8 @@ galleryTrack.addEventListener("touchend", (event) => {
   }
 }, { passive: true });
 eventTabs.forEach((tab) => tab.addEventListener("click", () => updateEvent(tab.dataset.eventTab)));
+revealSangeethEvent();
+applyReceptionOverride();
 guestInput.addEventListener("input", updateGuestReadout);
 form.addEventListener("submit", submitRsvp);
 if (videoFormUrl) {
@@ -297,5 +467,6 @@ buildGalleryDots();
 updateCountdown();
 updateGuestReadout();
 watchSections();
+startInviteMusic();
 setInterval(updateCountdown, 1000);
 setTimeout(openInvite, 1200);

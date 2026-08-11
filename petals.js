@@ -184,22 +184,39 @@ function hasSangeethAccess() {
     || params.has("sangeeth");
 }
 
-function revealSangeethEvent() {
-  if (!hasSangeethAccess() || !eventTabList) {
+function shouldHideReception() {
+  return new URLSearchParams(window.location.search).get("reception") === "0";
+}
+
+function addEventTab(key) {
+  if (!eventTabList || document.querySelector(`[data-event-tab="${key}"]`)) {
     return;
   }
 
-  const sangeethTab = document.createElement("button");
-  sangeethTab.type = "button";
-  sangeethTab.className = "event-tab";
-  sangeethTab.setAttribute("role", "tab");
-  sangeethTab.setAttribute("aria-selected", "false");
-  sangeethTab.dataset.eventTab = "sangeeth";
-  sangeethTab.textContent = "Sangeeth";
-  sangeethTab.addEventListener("click", () => updateEvent("sangeeth"));
-  eventTabList.appendChild(sangeethTab);
+  const tab = document.createElement("button");
+  tab.type = "button";
+  tab.className = "event-tab";
+  tab.setAttribute("role", "tab");
+  tab.setAttribute("aria-selected", "false");
+  tab.dataset.eventTab = key;
+  tab.textContent = events[key].kicker;
+  tab.addEventListener("click", () => updateEvent(key));
+  eventTabList.appendChild(tab);
+}
 
-  if (window.location.hash === "#sangeeth" || new URLSearchParams(window.location.search).get("event") === "sangeeth") {
+function setupOptionalEvents() {
+  const hideReception = shouldHideReception();
+  const showSangeeth = hideReception || hasSangeethAccess();
+
+  if (hideReception) {
+    document.querySelector('[data-event-tab="reception"]')?.remove();
+  }
+
+  if (showSangeeth) {
+    addEventTab("sangeeth");
+  }
+
+  if (hideReception || hasSangeethAccess()) {
     updateEvent("sangeeth");
     document.querySelector("#events").scrollIntoView({ block: "start" });
   }

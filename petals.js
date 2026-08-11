@@ -24,6 +24,8 @@ const videoModalCloseButtons = document.querySelectorAll("[data-close-video-moda
 const eventTabs = document.querySelectorAll("[data-event-tab]");
 const eventTabList = document.querySelector("[role='tablist'][aria-label='Wedding events']");
 const eventPanel = document.querySelector("[data-event-panel]");
+const gallerySection = document.querySelector("#gallery");
+const galleryDockLink = document.querySelector('.section-dock a[href="#gallery"]');
 const slides = [...document.querySelectorAll("[data-slide]")];
 const galleryDots = document.querySelector("[data-gallery-dots]");
 const galleryTrack = document.querySelector("[data-gallery-track]");
@@ -184,6 +186,10 @@ function hasSangeethAccess() {
     || params.has("sangeeth");
 }
 
+function hasReceptionOverride() {
+  return new URLSearchParams(window.location.search).get("reception") === "1";
+}
+
 function revealSangeethEvent() {
   if (!hasSangeethAccess() || !eventTabList) {
     return;
@@ -202,6 +208,32 @@ function revealSangeethEvent() {
   if (window.location.hash === "#sangeeth" || new URLSearchParams(window.location.search).get("event") === "sangeeth") {
     updateEvent("sangeeth");
     document.querySelector("#events").scrollIntoView({ block: "start" });
+  }
+}
+
+function applyReceptionOverride() {
+  if (!hasReceptionOverride()) {
+    return;
+  }
+
+  const receptionTab = document.querySelector('[data-event-tab="reception"]');
+  const sangeethTab = document.querySelector('[data-event-tab="sangeeth"]');
+
+  if (sangeethTab && sangeethTab !== receptionTab) {
+    sangeethTab.remove();
+  }
+
+  if (receptionTab) {
+    receptionTab.dataset.eventTab = "sangeeth";
+    receptionTab.textContent = "Sangeeth";
+  }
+
+  if (gallerySection) {
+    gallerySection.hidden = true;
+  }
+
+  if (galleryDockLink) {
+    galleryDockLink.hidden = true;
   }
 }
 
@@ -400,6 +432,7 @@ galleryTrack.addEventListener("touchend", (event) => {
 }, { passive: true });
 eventTabs.forEach((tab) => tab.addEventListener("click", () => updateEvent(tab.dataset.eventTab)));
 revealSangeethEvent();
+applyReceptionOverride();
 guestInput.addEventListener("input", updateGuestReadout);
 form.addEventListener("submit", submitRsvp);
 if (videoFormUrl) {
